@@ -5,6 +5,10 @@ const mongoose = require("mongoose");
 
 const PORT = 3000;
 
+async function main() {
+  await mongoose.connect(process.env.DATABASE_URL);
+}
+
 main()
   .then(() => {
     app.listen(PORT, () => {
@@ -14,7 +18,3 @@ main()
   .catch((err) => {
     console.log(err);
   });
-
-async function main() {
-  await mongoose.connect(process.env.DATABASE_URL);
-}
