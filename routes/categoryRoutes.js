@@ -5,6 +5,6 @@ const categoryController = require("../controllers/categoriesController");
 router
   .get("/", categoryController.getAllCategories)
   .post("/", categoryController.createCategory)
-  .get("/byname/:name", categoryController.getCategoryByName);
+  .get("/byname/:name/:gender", categoryController.getCategoryByNameAndGender);
 
 module.exports = router;

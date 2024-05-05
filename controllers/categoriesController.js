@@ -41,11 +41,12 @@ const createCategory = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc Get a Category by name
-// @route GET /categories/byname/:name
+// @desc Get a Category by name and gender
+// @route GET /categories/byname/:name/:gender
 // @access Private
-const getCategoryByName = asyncHandler(async (req, res) => {
-  const category = await Category.findOne({ name: req.params.name });
+const getCategoryByNameAndGender = asyncHandler(async (req, res) => {
+  const { name, gender } = req.params;
+  const category = await Category.findOne({ name, gender });
   if (category) {
     return res.json(category);
   } else {
@@ -53,4 +54,8 @@ const getCategoryByName = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getAllCategories, createCategory, getCategoryByName };
+module.exports = {
+  getAllCategories,
+  createCategory,
+  getCategoryByNameAndGender,
+};
