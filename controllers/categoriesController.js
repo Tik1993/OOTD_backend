@@ -22,7 +22,7 @@ const createCategory = asyncHandler(async (req, res) => {
   if (!name || !gender) {
     return res
       .status(400)
-      .json({ message: "Please provide a namme and gender" });
+      .json({ message: "Please provide a name and gender" });
   }
 
   const validGenders = ["Men", "Women", "Unisex"];
@@ -52,4 +52,5 @@ const getCategoryByName = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: "Category not found" });
   }
 });
+
 module.exports = { getAllCategories, createCategory, getCategoryByName };
