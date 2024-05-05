@@ -27,6 +27,7 @@ const createItem = asyncHandler(async (req, res) => {
     length_available,
     color_available,
     price,
+    gender,
   } = req.body;
 
   if (
@@ -35,20 +36,24 @@ const createItem = asyncHandler(async (req, res) => {
     !categoryName ||
     !subcategoryName ||
     !size_available ||
-    !color_available
+    !color_available ||
+    !gender
   ) {
     return res.status(400).json({
       message:
-        "Please provide a name, price, category, subcategory, size_available, color_available",
+        "Please provide a name, price, category, subcategory, gender, size_available, and color_available",
     });
   }
 
-  const category = await Category.findOne({ name: categoryName });
+  const category = await Category.findOne({ name: categoryName, gender });
   if (!category) {
     return res.status(404).json({ message: "Category not found" });
   }
 
-  const subcategory = await Category.findOne({ name: subcategoryName });
+  const subcategory = await Subcategory.findOne({
+    name: subcategoryName,
+    category: category._id,
+  });
   if (!subcategory) {
     return res.status(404).json({ message: "Subategory not found" });
   }
