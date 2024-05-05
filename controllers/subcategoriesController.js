@@ -42,9 +42,16 @@ const createSubcategory = asyncHandler(async (req, res) => {
 // @desc Get a Subcategory by name
 // @route GET /subcategories/byname/:name
 // @access Private
-const getSubcategoryByName = asyncHandler(async (req, res) => {
+const getSubcategoryByNameCatGen = asyncHandler(async (req, res) => {
+  const { name, category: categoryName, gender } = req.params;
+  const category = await Category.findOne({ name: categoryName, gender });
+  if (!category) {
+    return res.status(404).json({ message: "Category not found" });
+  }
+
   const subcategory = await Subcategory.findOne({
-    name: req.params.name,
+    name,
+    category: category._id,
   }).populate("category", "name gender -_id");
   if (subcategory) {
     return res.json(subcategory);
@@ -56,5 +63,5 @@ const getSubcategoryByName = asyncHandler(async (req, res) => {
 module.exports = {
   getAllSubcategories,
   createSubcategory,
-  getSubcategoryByName,
+  getSubcategoryByNameCatGen,
 };
