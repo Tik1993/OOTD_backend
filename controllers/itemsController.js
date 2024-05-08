@@ -45,11 +45,19 @@ const createItem = asyncHandler(async (req, res) => {
     });
   }
 
+  //Check if item already exists
+  const checkItem = await Item.findOne({ name });
+  if (checkItem) {
+    return res
+      .status(400)
+      .json({ message: "Item already exists, please update the item instead" });
+  }
+  // Check if category exists
   const category = await Category.findOne({ name: categoryName, gender });
   if (!category) {
     return res.status(404).json({ message: "Category not found" });
   }
-
+  //Check if subcategory exists
   const subcategory = await Subcategory.findOne({
     name: subcategoryName,
     category: category._id,
@@ -60,8 +68,8 @@ const createItem = asyncHandler(async (req, res) => {
   const item = new Item({
     name,
     price,
-    category,
-    subcategory,
+    category: category._id,
+    subcategory: subcategory._id,
     size_available,
     length_available,
     color_available,

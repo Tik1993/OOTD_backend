@@ -42,7 +42,7 @@ const createSubcategory = asyncHandler(async (req, res) => {
 });
 
 // @desc Get a Subcategory by name
-// @route GET /subcategories/byname/:name
+// @route GET /subcategories/byname/:name/:category/:gender
 // @access Private
 const getSubcategoryByNameCatGen = asyncHandler(async (req, res) => {
   const { name, category: categoryName, gender } = req.params;
