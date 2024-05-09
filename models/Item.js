@@ -26,6 +26,10 @@ const itemSchema = new mongoose.Schema({
   price: {
     type: Number,
   },
+  updated_date: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 itemSchema.virtual("imageUrl").get(function () {
