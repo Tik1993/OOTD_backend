@@ -34,7 +34,6 @@ const createItem = asyncHandler(async (req, res) => {
     !name ||
     !price ||
     !categoryName ||
-    !subcategoryName ||
     !size_available ||
     !color_available ||
     !gender
@@ -58,18 +57,24 @@ const createItem = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: "Category not found" });
   }
   //Check if subcategory exists
-  const subcategory = await Subcategory.findOne({
-    name: subcategoryName,
-    category: category._id,
-  });
-  if (!subcategory) {
-    return res.status(404).json({ message: "Subategory not found" });
+  let subcategory;
+  if (subcategoryName) {
+    subcategory = await Subcategory.findOne({
+      name: subcategoryName,
+      category: category._id,
+    });
+    if (!subcategory) {
+      return res.status(404).json({ message: "Subcategory not found" });
+    }
   }
+
+  let subcategoryId = subcategoryName ? subcategory._id : null;
+
   const item = new Item({
     name,
     price,
     category: category._id,
-    subcategory: subcategory._id,
+    subcategory: subcategoryId,
     size_available,
     length_available,
     color_available,
