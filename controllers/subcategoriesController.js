@@ -53,7 +53,7 @@ const getSubcategoryByNameCatGen = asyncHandler(async (req, res) => {
 
   const subcategory = await Subcategory.findOne({
     name,
-    // category: category._id,
+    category: category._id,
   }).populate("category", "name gender -_id");
   if (subcategory) {
     return res.json(subcategory);

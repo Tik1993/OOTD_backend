@@ -26,6 +26,11 @@ const logger = async (req, res, next) => {
       `${req.method}\t${req.url}\t${req.headers.origin}`,
       "reqLog.log"
     );
+  } else if (req.method === "GET") {
+    await logEvents(
+      `${req.method}\t${req.url}\t${req.headers.origin}`,
+      "getLog.log"
+    );
   }
 
   next();

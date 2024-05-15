@@ -2,7 +2,10 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const cors = require("cors");
+
 const { logger } = require("./middleware/logger");
+const corsOptions = require("./config/corsOptions");
 
 const PORT = 3000;
 
@@ -26,8 +29,9 @@ mongoose.connection.on("error", (err) => {
 });
 
 app.use(express.json());
-
+app.use(cors(corsOptions));
 app.use(logger);
+
 app.use("/items", require("./routes/itemRoutes"));
 app.use("/categories", require("./routes/categoryRoutes"));
 app.use("/subcategories", require("./routes/subcategoryRoutes"));
