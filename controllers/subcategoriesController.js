@@ -6,7 +6,9 @@ const Category = require("../models/Category");
 // @route GET /subcategories
 // @access Private
 const getAllSubcategories = asyncHandler(async (req, res) => {
-  const subcategories = await Subcategory.find().lean();
+  const subcategories = await Subcategory.find()
+    .lean()
+    .populate("category", "name gender -_id");
   if (!subcategories.length) {
     return res.status(400).json({ message: "No subcategories found" });
   }
