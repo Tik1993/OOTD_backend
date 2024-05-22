@@ -8,7 +8,7 @@ const Category = require("../models/Category");
 const getAllSubcategories = asyncHandler(async (req, res) => {
   const subcategories = await Subcategory.find()
     .lean()
-    .populate("category", "name gender -_id");
+    .populate("category", "name gender _id");
   if (!subcategories.length) {
     return res.status(400).json({ message: "No subcategories found" });
   }
@@ -56,7 +56,7 @@ const getSubcategoryByNameCatGen = asyncHandler(async (req, res) => {
   const subcategory = await Subcategory.findOne({
     name,
     category: category._id,
-  }).populate("category", "name gender -_id");
+  }).populate("category", "name gender _id");
   if (subcategory) {
     return res.json(subcategory);
   } else {

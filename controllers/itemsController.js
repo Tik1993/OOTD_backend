@@ -7,8 +7,10 @@ const Subcategory = require("../models/Subcategory");
 // @route GET /items
 // @access Private
 const getAllItems = asyncHandler(async (req, res) => {
-  console.log(req.user);
-  const items = await Item.find().lean();
+  const items = await Item.find()
+    .lean()
+    .populate("category", "name gender _id")
+    .populate("subcategory", "name _id");
   if (!items.length) {
     return res.status(400).json({ message: "No items found" });
   }
