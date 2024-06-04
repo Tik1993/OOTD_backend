@@ -21,8 +21,7 @@ async function main() {
       "Obsidian",
       "Nomad",
       "Army Green",
-    ],
-    138
+    ]
   );
 
   mongoose.connection.close();
