@@ -8,6 +8,7 @@ const Subcategory = require("../models/Subcategory");
 // @access Private
 const getAllItems = asyncHandler(async (req, res) => {
   const items = await Item.find()
+    .sort({ name: 1 })
     .lean()
     .populate("category", "name gender _id")
     .populate("subcategory", "name _id");
