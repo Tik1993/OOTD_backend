@@ -18,6 +18,20 @@ const getAllItems = asyncHandler(async (req, res) => {
   res.json(items);
 });
 
+// @desc Get an item by ID
+// @route GET /items/:id
+// @access Private
+const getItemById = asyncHandler(async (req, res) => {
+  const item = await Item.findById(req.params.id)
+    .lean()
+    .populate("category", "name gender _id")
+    .populate("subcategory", "name _id");
+  if (item) {
+    res.json(item);
+  } else {
+    res.status(404).json({ message: "Item not found" });
+  }
+});
 // @desc Create a new Item
 // @route POST /items
 // @access Private
@@ -89,4 +103,4 @@ const createItem = asyncHandler(async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
-module.exports = { getAllItems, createItem };
+module.exports = { getAllItems, getItemById, createItem };
