@@ -36,3 +36,4 @@ app.use("/items", require("./routes/itemRoutes"));
 app.use("/categories", require("./routes/categoryRoutes"));
 app.use("/subcategories", require("./routes/subcategoryRoutes"));
 app.use("/users", require("./routes/userRoutes"));
+app.use("/auth", require("./routes/authRoutes"));
