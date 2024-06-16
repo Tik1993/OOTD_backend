@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const { logger } = require("./middleware/logger");
 const corsOptions = require("./config/corsOptions");
@@ -30,6 +31,7 @@ mongoose.connection.on("error", (err) => {
 
 app.use(express.json());
 app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(logger);
 
 app.use("/items", require("./routes/itemRoutes"));

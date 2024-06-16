@@ -40,7 +40,6 @@ const login = asyncHandler(async (req, res) => {
     sameSite: "none",
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
-  console.log("login");
   return res.status(200).json({ accessToken });
 });
 
@@ -48,8 +47,33 @@ const login = asyncHandler(async (req, res) => {
 // @route POST /auth/register
 // @access Private
 const refresh = asyncHandler(async (req, res) => {
-  console.log("refresh");
-  res.send("refresh");
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) {
+    return res.status(401).json({ message: "Access denied" });
+  } else {
+    jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+      asyncHandler(async (err, userDecoded) => {
+        if (err) {
+          return res.status(403).json({ message: "Access denied" });
+        } else {
+          const user = await User.findOne({
+            username: userDecoded.username,
+          }).lean();
+          if (!user) {
+            return res.status(403).json({ message: "User not found" });
+          }
+          const accessToken = jwt.sign(
+            { username: user.username },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: "7d" }
+          );
+          res.status(200).json({ accessToken });
+        }
+      })
+    );
+  }
 });
 
 //@desc logout a user
