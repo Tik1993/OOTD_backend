@@ -80,8 +80,13 @@ const refresh = asyncHandler(async (req, res) => {
 //@route POST /auth/logout
 //@access Private
 const logout = asyncHandler(async (req, res) => {
-  console.log("logout");
-  res.send("logout");
+  const cookies = req.cookies;
+  if (!cookies.refreshToken) {
+    return res.status(200).json({ message: "Not logged in" });
+  }
+  res.clearCookie("refreshToken"),
+    { httpOnly: true, sameSite: "None", secure: true };
+  return res.status(200).json({ message: "Logged out" });
 });
 
 module.exports = { login, refresh, logout };
