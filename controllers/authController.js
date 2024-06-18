@@ -23,7 +23,13 @@ const login = asyncHandler(async (req, res) => {
   }
 
   const accessToken = jwt.sign(
-    { UserInfo: { username: user.username, roles: user.roles } },
+    {
+      UserInfo: {
+        username: user.username,
+        userid: user._id,
+        roles: user.roles,
+      },
+    },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: "15m" }
   );
@@ -40,7 +46,9 @@ const login = asyncHandler(async (req, res) => {
     sameSite: "none",
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
-  return res.status(200).json({ accessToken });
+  return res
+    .status(200)
+    .json({ accessToken, username: user.username, userid: user._id });
 });
 
 // @desc refresh user
@@ -65,7 +73,13 @@ const refresh = asyncHandler(async (req, res) => {
             return res.status(403).json({ message: "User not found" });
           }
           const accessToken = jwt.sign(
-            { UserInfo: { username: user.username, roles: user.roles } },
+            {
+              UserInfo: {
+                username: user.username,
+                userid: user._id,
+                roles: user.roles,
+              },
+            },
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: "15m" }
           );
