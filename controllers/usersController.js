@@ -98,7 +98,7 @@ const getUserDetail = asyncHandler(async (req, res) => {
   if (token == null) return res.status(401).json({ message: "Access denied" });
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
     if (err) {
-      console.log(err);
+      // console.log(err);
       return res.status(403).json({ message: "Access denied" });
     }
     const userInfo = await User.findOne(

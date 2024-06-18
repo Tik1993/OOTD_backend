@@ -65,9 +65,9 @@ const refresh = asyncHandler(async (req, res) => {
             return res.status(403).json({ message: "User not found" });
           }
           const accessToken = jwt.sign(
-            { username: user.username },
+            { UserInfo: { username: user.username, roles: user.roles } },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: "7d" }
+            { expiresIn: "15m" }
           );
           res.status(200).json({ accessToken });
         }
