@@ -2,7 +2,6 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const { default: mongoose, get } = require("mongoose");
-const jwt = require("jsonwebtoken");
 
 // @desc Get all Users
 // @route GET /users
@@ -92,20 +91,13 @@ const updateUser = asyncHandler(async (req, res) => {
 // @route Get /users/detail
 // @access Private
 const getUserDetail = asyncHandler(async (req, res) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+  const userid = req.userId;
 
-  if (token == null) return res.status(401).json({ message: "Access denied" });
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
-    if (err) {
-      // console.log(err);
-      return res.status(403).json({ message: "Access denied" });
-    }
-    const userInfo = await User.findOne(
-      { username: user.UserInfo.username },
-      "username favouriteItems currentItems -_id"
-    ).lean();
-    return res.json(userInfo);
-  });
+  const userInfo = await User.findOne(
+    { _id: userid },
+    "username favouriteItems currentItems -_id"
+  ).lean();
+
+  return res.json(userInfo);
 });
 module.exports = { getAllUsers, createUser, updateUser, getUserDetail };
