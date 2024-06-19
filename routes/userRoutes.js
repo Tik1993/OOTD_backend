@@ -6,7 +6,7 @@ const checkJWT = require("../middleware/checkJWT");
 router
   .get("/", userController.getAllUsers)
   .post("/", userController.createUser)
-  .patch("/:id", userController.updateUser)
+  .patch("/:id", checkJWT, userController.updateUser)
   .get("/detail", checkJWT, userController.getUserDetail);
 
 module.exports = router;

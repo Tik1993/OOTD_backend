@@ -83,6 +83,17 @@ const updateUser = asyncHandler(async (req, res) => {
     }
     user.roles = req.body.roles;
   }
+
+  //handle the update of favouriteItems
+  if (req.body.itemId) {
+    if (!user.favouriteItems.includes(req.body.itemId)) {
+      user.favouriteItems.push(req.body.itemId);
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Item is already in the favourite list" });
+    }
+  }
   const updatedUser = await user.save();
   return res.json(updatedUser);
 });
