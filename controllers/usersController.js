@@ -94,6 +94,17 @@ const updateUser = asyncHandler(async (req, res) => {
         .json({ message: "Item is already in the favourite list" });
     }
   }
+
+  if (req.body.itemDetail) {
+    // console.log(req.body.itemDetail);
+    const existingItem = user.currentItems.find(
+      (item) => item.itemId.toString() === req.body.itemDetail.itemId
+    );
+    if (existingItem) {
+      return res.status(400).json({ message: "Item is already in the closet" });
+    }
+    user.currentItems.push(req.body.itemDetail);
+  }
   const updatedUser = await user.save();
   return res.json(updatedUser);
 });
