@@ -7,6 +7,6 @@ router
   .get("/", userController.getAllUsers)
   .post("/", userController.createUser)
   .patch("/:id", checkJWT, userController.updateUser)
-  .get("/detail", checkJWT, userController.getUserDetail);
+  .get("/:id/detail", checkJWT, userController.getUserDetail);
 
 module.exports = router;

@@ -10,7 +10,6 @@ module.exports = async function (req, res, next) {
       // console.log(err);
       return res.status(403).json({ message: "Access denied" });
     }
-    req.userId = user.UserInfo.userid;
   });
 
   next();

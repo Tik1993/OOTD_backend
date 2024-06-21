@@ -110,10 +110,10 @@ const updateUser = asyncHandler(async (req, res) => {
 });
 
 // @desc Get User detail by access token
-// @route Get /users/detail
+// @route Get /users/:id/detail
 // @access Private
 const getUserDetail = asyncHandler(async (req, res) => {
-  const userid = req.userId;
+  const userid = req.params.id;
 
   const userInfo = await User.findOne(
     { _id: userid },
