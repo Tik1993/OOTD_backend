@@ -32,6 +32,7 @@ const getItemById = asyncHandler(async (req, res) => {
     res.status(404).json({ message: "Item not found" });
   }
 });
+
 // @desc Create a new Item
 // @route POST /items
 // @access Private
@@ -103,4 +104,18 @@ const createItem = asyncHandler(async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
-module.exports = { getAllItems, getItemById, createItem };
+
+// @desc get latest items
+// @route GET /items/latest
+// @access Private
+const getLatestItems = asyncHandler(async (req, res) => {
+  const items = await Item.find()
+    .sort({ updated_date: -1 })
+    .limit(5)
+    .lean()
+    .populate("category", "name gender _id")
+    .populate("subcategory", "name _id");
+  res.json(items);
+});
+
+module.exports = { getAllItems, getItemById, createItem, getLatestItems };
